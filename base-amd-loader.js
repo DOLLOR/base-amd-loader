@@ -162,6 +162,7 @@
 		factoryArray.push(mod);
 	};
 	define.amd = {};
-	g.requireScript = requireModule;
+	g.requireModule = requireModule;
+	requireModule.loadScriptFile = loadScriptFile;
 	g.define = define;
 })(this);
