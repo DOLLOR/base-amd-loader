@@ -59,7 +59,7 @@
 					moduleFactory.exports,
 					moduleFactory,
 				);
-				if(out==null) out = moduleFactory.exports;
+				if(out===undefined) out = moduleFactory.exports;
 			}
 			moduleFactory.exports = out;
 			delete moduleFactory._mod.factory;
@@ -102,7 +102,9 @@
 				 */
 				let moduleFactory = {
 					exports:{},
-					_mod:current_mod||{},
+					_mod:current_mod||{
+						factory:()=>null,
+					},
 				};
 				current_mod = null;
 				moduleFactory._mod.url = src;
