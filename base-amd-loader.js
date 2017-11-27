@@ -16,6 +16,19 @@
 	 */
 	let isFunction = obj => (typeof parseInt === typeof obj);
 
+	/**
+	 * @typedef {Object} Module
+	 * @property {Object} exports
+	 * @property {_Mod} _mod
+	 * 
+	 * @typedef {Object} _Mod
+	 * @property {String} name
+	 * @property {String} url
+	 * @property {String} dep
+	 * @property {String} factory
+	 */
+
+	/** @type {Module[]} */
 	let moduleArray = [];
 
 	let requireScript = async function(src){
@@ -96,6 +109,7 @@
 	*/
 	let factoryArray = [];
 	let define = function(...args){
+		/**@type {Module} */
 		let mod = {
 			exports:{},
 			_mod:{
