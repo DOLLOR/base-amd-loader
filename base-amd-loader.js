@@ -24,14 +24,21 @@
 	 * @typedef {Object} _Mod
 	 * @property {String} name
 	 * @property {String} url
-	 * @property {String} dep
-	 * @property {String} factory
+	 * @property {*[]} dep
+	 * @property {*} factory
 	 */
 
-	/** @type {Module[]} */
+	/**
+	 * modules, each of which has inited
+	 * @type {Module[]}
+	*/
 	let moduleArray = [];
 
-	let requireScript = async function(src){
+	/**
+	 * load amd module from src
+	 * @param {String} src 
+	 */
+	let requireModule = async function(src){
 		let loadedMod = moduleArray.find(i=> i._mod.url===src);
 		let out;
 		if(loadedMod){
@@ -58,6 +65,12 @@
 		return out;
 	};
 
+	/**
+	 * append js file to document
+	 * @param {String} src 
+	 * @param {(this:HTMLScriptElement,e:Event)=>} onload 
+	 * @param {(this:HTMLScriptElement,e:Event)=>} onerror 
+	 */
 	let loadScriptFile = function(src,onload,onerror){
 		let scriptTag = document.createElement('script');
 		scriptTag.async = true;
@@ -70,6 +83,11 @@
 		document.head.appendChild(scriptTag);
 	};
 
+	/**
+	 * load amd, get the factory function
+	 * @param {String} src 
+	 * @return {Promise<{event:Event,scriptTag:HTMLScriptElement,moduleFactory:Module}>}
+	 */
 	let loadAMDFile = function(src){
 		return new Promise((resolve,reject)=>{
 			loadScriptFile(src,function(event){
@@ -107,7 +125,13 @@
 			exports.action = function () {};
 		});
 	*/
+
+	/**
+	 * modules, each of which has not inited yet, has a factory function
+	 * @type {Module[]}
+	 */
 	let factoryArray = [];
+
 	let define = function(...args){
 		/**@type {Module} */
 		let mod = {
@@ -138,6 +162,6 @@
 		factoryArray.push(mod);
 	};
 	define.amd = {};
-	g.requireScript = requireScript;
+	g.requireScript = requireModule;
 	g.define = define;
 })(this);
