@@ -93,8 +93,14 @@
 			loadScriptFile(src,function(event){
 				document.head.removeChild(this);
 
-				let moduleFactory = factoryArray;
-				factoryArray = null;
+				/**
+				 * @type {Module}
+				 */
+				let moduleFactory = {
+					exports:{},
+					_mod:current_mod,
+				};
+				current_mod = null;
 				moduleFactory._mod.url = src;
 				if(!moduleFactory._mod.name) moduleFactory._mod.name = src;
 
@@ -129,38 +135,35 @@
 
 	/**
 	 * module which has not inited yet, has a factory function
-	 * @type {Module}
+	 * @type {_Mod}
 	 */
-	let factoryArray;
+	let current_mod;
 
 	let define = function(...args){
 		/**@type {Module} */
-		let mod = {
-			exports:{},
-			_mod:{
-				name:'',
-				url:'',
-				dep:null,
-				factory:null,
-			}
+		let _mod = {
+			name:'',
+			url:'',
+			dep:null,
+			factory:null,
 		};
-		let exports = mod.exports;
+
 		let arg = args.shift();
 
 		if(isString(arg)){
-			mod._mod.name = arg;
+			_mod.name = arg;
 			arg = args.shift();
 		}
 
 		if(isArray(arg)){
-			mod._mod.dep = arg;
+			_mod.dep = arg;
 			arg = args.shift();
 		}
 
 		if(isFunction(arg)){
-			mod._mod.factory = arg;
+			_mod.factory = arg;
 		}
-		factoryArray = mod;
+		current_mod = _mod;
 	};
 	define.amd = {};
 	g.requireModule = requireModule;
