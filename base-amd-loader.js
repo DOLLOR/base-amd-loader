@@ -93,7 +93,8 @@
 			loadScriptFile(src,function(event){
 				document.head.removeChild(this);
 
-				let moduleFactory = factoryArray.shift();
+				let moduleFactory = factoryArray;
+				factoryArray = null;
 				moduleFactory._mod.url = src;
 				if(!moduleFactory._mod.name) moduleFactory._mod.name = src;
 
@@ -127,10 +128,10 @@
 	*/
 
 	/**
-	 * modules, each of which has not inited yet, has a factory function
-	 * @type {Module[]}
+	 * module which has not inited yet, has a factory function
+	 * @type {Module}
 	 */
-	let factoryArray = [];
+	let factoryArray;
 
 	let define = function(...args){
 		/**@type {Module} */
@@ -159,7 +160,7 @@
 		if(isFunction(arg)){
 			mod._mod.factory = arg;
 		}
-		factoryArray.push(mod);
+		factoryArray = mod;
 	};
 	define.amd = {};
 	g.requireModule = requireModule;
