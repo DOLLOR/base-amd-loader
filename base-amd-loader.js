@@ -45,6 +45,10 @@
 			out = loadedMod.exports;
 		}else{
 			let {moduleFactory} = await loadAMDFile(src);
+			if(!isFunction(moduleFactory._mod.factory)){
+				let out = moduleFactory._mod.factory;
+				moduleFactory._mod.factory = () => out;
+			}
 			if(moduleFactory._mod.dep){
 				out = moduleFactory._mod.factory();
 			}else{
@@ -98,7 +102,7 @@
 				 */
 				let moduleFactory = {
 					exports:{},
-					_mod:current_mod,
+					_mod:current_mod||{},
 				};
 				current_mod = null;
 				moduleFactory._mod.url = src;
