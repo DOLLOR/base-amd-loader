@@ -17,6 +17,19 @@
 	let isFunction = obj => (typeof parseInt === typeof obj);
 
 	/**
+	 * convert relative url to absolute url
+	 * @param {String} url 
+	 * @return {String}
+	 */
+	let canonicalize = function(url) {
+		var div = document.createElement('div');
+		div.innerHTML = "<a></a>";
+		div.firstChild.href = url; // Ensures that the href is properly escaped
+		div.innerHTML = div.innerHTML; // Run the current innerHTML back through the parser
+		return div.firstChild.href;
+	}
+
+	/**
 	 * @typedef {Object} Module
 	 * @property {Object} exports
 	 * @property {_Mod} _mod
@@ -39,6 +52,7 @@
 	 * @param {String} src 
 	 */
 	let requireModule = async function(src){
+		src = canonicalize(src);
 		let loadedMod = moduleArray.find(i=> i._mod.url===src);
 		let out;
 		if(loadedMod){
