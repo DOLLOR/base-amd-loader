@@ -95,10 +95,28 @@
 		scriptTag.defer = true;
 		scriptTag.type = 'text/javascript';
 		scriptTag.charset = 'UTF-8';
-		scriptTag.onload = onload;
-		scriptTag.onerror = onerror;
-		scriptTag.src = src;
-		document.head.appendChild(scriptTag);
+		if('onload' in scriptTag){
+			scriptTag.onload = onload;
+			scriptTag.onerror = onerror;
+			scriptTag.src = src;
+			document.head.appendChild(scriptTag);
+		}else if('onreadystatechange' in scriptTag){
+			scriptTag.onreadystatechange = function(ev){
+				let beforeState = this.readyState;
+				scriptTag.children;//ie hack
+				let afterState = this.readyState;
+				if(beforeState === afterState){
+					if(!ev) ev = event;
+					document.head.appendChild(scriptTag);
+					if(afterState==='loaded'||afterState==='complete'){
+						onload.call(this,ev);
+					}else{
+						onerror.call(this,ev);
+					}
+				}
+			};
+			scriptTag.src = src;
+		}
 	};
 
 	/**
