@@ -85,6 +85,7 @@
 
 	/**
 	 * append js file to document
+	 * @see {@link https://pie.gd/test/script-link-events/}
 	 * @param {String} src 
 	 * @param {(this:HTMLScriptElement,e:Event)=>} onload 
 	 * @param {(this:HTMLScriptElement,e:Event)=>} onerror 
@@ -102,6 +103,9 @@
 			document.head.appendChild(scriptTag);
 		}else if('onreadystatechange' in scriptTag){
 			scriptTag.onreadystatechange = function(ev){
+				/**
+				 * @see {@link https://stackoverflow.com/questions/6946631/dynamically-creating-script-readystate-never-complete/}
+				 */
 				let beforeState = this.readyState;
 				scriptTag.children;//ie hack
 				let afterState = this.readyState;
