@@ -101,9 +101,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                             moduleFactory._mod.factory = function () { return out_1; };
                         }
                         if (moduleFactory._mod.dep) {
+                            /*
+                                define(["alpha"], function(alpha) {
+                                    return {
+                                        verb: function() {
+                                            return alpha.verb() + 2;
+                                        }
+                                    };
+                                });
+                            */
+                            if (moduleFactory._mod.dep.length > 0) {
+                                console.log('dependancy is not supported');
+                            }
                             out = moduleFactory._mod.factory();
                         }
                         else {
+                            /*
+                                define(function(require, exports, module) {
+                                    var a = require('a'),
+                                        b = require('b');
+            
+                                    exports.action = function() {};
+                                });
+                            */
                             out = moduleFactory._mod.factory(function () {
                                 throw new Error('require is not supported!');
                             }, moduleFactory.exports, moduleFactory);
@@ -203,13 +223,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
                 //Or:
                 return require("beta").verb();
             }
-        });
-
-        define(function (require, exports, module) {
-            var a = require('a'),
-                b = require('b');
-
-            exports.action = function () {};
         });
     */
     /**
