@@ -33,7 +33,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-
 !(function (g) {
     "use strict";
     if (!document.head) {
@@ -124,6 +123,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     };
     /**
      * append js file to document
+     * @see {@link https://pie.gd/test/script-link-events/}
      * @param {String} src
      * @param {(this:HTMLScriptElement,e:Event)=>} onload
      * @param {(this:HTMLScriptElement,e:Event)=>} onerror
@@ -142,6 +142,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         }
         else if ('onreadystatechange' in scriptTag) {
             scriptTag.onreadystatechange = function (ev) {
+                /**
+                 * @see {@link https://stackoverflow.com/questions/6946631/dynamically-creating-script-readystate-never-complete/}
+                 */
                 var beforeState = this.readyState;
                 scriptTag.children; //ie hack
                 var afterState = this.readyState;
