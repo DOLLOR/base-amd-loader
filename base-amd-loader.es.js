@@ -60,15 +60,39 @@
 		}else{
 			let {moduleFactory} = await loadAMDFile(src);
 			if(!isFunction(moduleFactory._mod.factory)){
+				/*
+					define({
+						add: function(x, y) {
+							return x + y;
+						}
+					});
+				*/
 				let out = moduleFactory._mod.factory;
 				moduleFactory._mod.factory = () => out;
 			}
 			if(moduleFactory._mod.dep){
+				/*
+					define(["alpha"], function(alpha) {
+						return {
+							verb: function() {
+								return alpha.verb() + 2;
+							}
+						};
+					});
+				*/
 				if(moduleFactory._mod.dep.length>0){
 					console.log('dependancy is not supported');
 				}
 				out = moduleFactory._mod.factory();
 			}else{
+				/*
+					define(function(require, exports, module) {
+						var a = require('a'),
+							b = require('b');
+
+						exports.action = function() {};
+					});
+				*/
 				out = moduleFactory._mod.factory(
 					function(){
 						throw new Error('require is not supported!')
