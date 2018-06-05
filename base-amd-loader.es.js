@@ -64,6 +64,9 @@
 				moduleFactory._mod.factory = () => out;
 			}
 			if(moduleFactory._mod.dep){
+				if(moduleFactory._mod.dep.length>0){
+					console.log('dependancy is not supported');
+				}
 				out = moduleFactory._mod.factory();
 			}else{
 				out = moduleFactory._mod.factory(
