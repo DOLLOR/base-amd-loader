@@ -106,7 +106,7 @@
 			delete moduleFactory._mod.factory;
 			moduleArray.push(moduleFactory);
 		}
-		console.log(moduleArray);
+		// console.log(moduleArray);
 		return out;
 	};
 
